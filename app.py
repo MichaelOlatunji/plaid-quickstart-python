@@ -1,6 +1,4 @@
 from dotenv import load_dotenv
-load_dotenv()
-
 import base64
 import os
 import datetime
@@ -12,6 +10,8 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
+load_dotenv()
+
 app = Flask(__name__)
 
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
@@ -22,10 +22,10 @@ PLAID_COUNTRY_CODES = os.getenv('PLAID_COUNTRY_CODES', 'US').split(',')
 
 
 def empty_to_none(field):
-  value = os.getenv(field)
-  if value is None or len(value) == 0:
-    return None
-  return value
+    value = os.getenv(field)
+    if value is None or len(value) == 0:
+        return None
+    return value
 
 
 PLAID_REDIRECT_URI = empty_to_none('PLAID_REDIRECT_URI')
@@ -160,6 +160,7 @@ def get_auth():
 
 # Retrieve Transactions for an Item
 # https://plaid.com/docs/#transactions
+
 @app.route('/api/transactions', methods=['GET'])
 def get_transactions():
   # Pull transactions for the last 30 days
@@ -303,8 +304,8 @@ def pretty_print_response(response):
 
 
 def format_error(e):
-    return {'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type, 'error_message': e.message } }
+    return {'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type, 'error_message': e.message }}
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="localhost", port=8000, debug=True)
